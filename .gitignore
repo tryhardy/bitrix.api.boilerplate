@@ -1,0 +1,14 @@
+/bitrix
+/upload
+/local/modules/sprint.migration
+/.htaccess
+/webstat
+/.idea
+
+vendor/
+node_modules/
+
+*.lock
+*-lock.json
+mix-manifest.json
+mix.js.map
