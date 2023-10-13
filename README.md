@@ -1,7 +1,16 @@
 # bitrix.api.boilerplate
  
 Бойлерплейт для работы с битриксом через роутинг  
-[Инструкция по настройке битры тут](https://dev.1c-bitrix.ru/learning/course/index.php?COURSE_ID=43&CHAPTER_ID=013764)  
+[Инструкция по настройке роутинга на битре тут](https://dev.1c-bitrix.ru/learning/course/index.php?COURSE_ID=43&CHAPTER_ID=013764)  
+
+Для корректной работы необходимы:
+- **php** >=8.1
+- composer
+- nodejs
+
+Базовая настройка:
+- следуем битриксовым инструкциям по установке
+- ставим нужные библиотеки через композер
 
 ## CSRF filters
 В **GET** передавать sessid={SESSION_ID}  
