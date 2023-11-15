@@ -28,6 +28,6 @@ class Search extends Controller
             return [];
         }
 
-        return (new \Boilerplate\Tools\Common\Search($this->checkLang($lang)))->get($search, $sort, $offset, $limit);
+        return (new \Boilerplate\Tools\Model\Search($this->checkLang($lang)))->get($search, $sort, $offset, $limit);
     }
 }

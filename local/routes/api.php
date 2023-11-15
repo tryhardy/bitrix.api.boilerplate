@@ -6,10 +6,9 @@ use Boilerplate\Tools\Controller;
 return function (RoutingConfigurator $routes) {
     $routes->prefix('api')
         ->group(function (RoutingConfigurator $routes) {
-
-	        // Получить код сессии (для проверок CSRF)
-	        $routes->get('sessid', [Controller\Session::class, 'get']);
-	        $routes->options('sessid', [Controller\Preflight::class, 'preflight']);
+	        // Скрипты
+	        $routes->get('links/js', [Controller\Links::class, 'getJs']);
+	        $routes->options('links/js', [Controller\Preflight::class, 'preflight']);
 
             // Контент страниц
             $routes->get('pages/{page}', [Controller\Page::class, 'get']);

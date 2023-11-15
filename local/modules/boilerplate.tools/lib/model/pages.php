@@ -1,6 +1,6 @@
 <?php
 
-namespace Boilerplate\Tools\Common;
+namespace Boilerplate\Tools\Model;
 
 use Bitrix\Main\Loader;
 use Boilerplate\Tools\Content\Content;
@@ -8,6 +8,7 @@ use Boilerplate\Tools\Helper;
 
 class Pages
 {
+	public const PAGES_ENTITY_CLASS = '\Bitrix\Iblock\Elements\ElementPages#LANG#Table';
     private readonly string $className;
     public int $pagesIblockId;
     private array $breadcrumbs;
@@ -21,7 +22,7 @@ class Pages
     {
         Loader::includeModule('iblock');
 
-        $this->className = "\Bitrix\Iblock\Elements\ElementPages{$this->lang}Table";
+        $this->className = str_replace('#LANG#', $this->lang, self::PAGES_ENTITY_CLASS);
 
         if ($this->page) {
             $this->getPageData($this->page);
@@ -83,7 +84,7 @@ class Pages
 
             foreach ($breadCrumbs as $i => $breadCrumb) {
                 $b = [
-                    'text' => $breadCrumb->getValue(),
+                    'text' => $breadCrumb?->getValue(),
                 ];
 
                 if ($href = $breadCrumb->getDescription()) {
@@ -96,35 +97,34 @@ class Pages
             }
 
             // Meta
-            if ($title = $page->getSeoTitle()->getValue()) {
+            if ($title = $page?->getSeoTitle()?->getValue()) {
                 $this->meta['pageTitle'] = $title;
             }
 
-            if ($h1 = $page->getSeoH1()->getValue()) {
+            if ($h1 = $page?->getSeoH1()?->getValue()) {
                 $this->meta['pageH1'] = $h1;
             }
 
-            if ($description = $page->getSeoDescription()->getValue()) {
+            if ($description = $page?->getSeoDescription()?->getValue()) {
                 $this->meta['pageDescription'] = $description;
             }
 
-
             // Тип маски для изображения
-            if ($page->getMaskType()->getItem() && ($maskType = $page->getMaskType()->getItem()->getXmlId())) {
+            if ($page?->getMaskType()->getItem() && ($maskType = $page?->getMaskType()->getItem()->getXmlId())) {
                 $this->mask = $maskType;
             }
 
             // изображения для шапки страницы
-            if ($imageDesktop = $page->getPreviewPicture()) {
+            if ($imageDesktop = $page?->getPreviewPicture()) {
                 $this->images['src'] = Helper::getAbsoluteUrl(\CFile::GetPath($imageDesktop));
             }
-            if ($imageTab = $page->getDetailPicture()) {
+            if ($imageTab = $page?->getDetailPicture()) {
                 $this->images['tab']['srcset'][] = [
                     'src'   => Helper::getAbsoluteUrl(\CFile::GetPath($imageTab)),
                     'scale' => 1,
                 ];
             }
-            if ($page->getImageMob() && ($imageMob = $page->getImageMob()->getValue())) {
+            if ($page->getImageMob() && ($imageMob = $page?->getImageMob()?->getValue())) {
                 $this->images['mob']['srcset'][] = [
                     'src'   => Helper::getAbsoluteUrl(\CFile::GetPath($imageMob)),
                     'scale' => 1,
@@ -137,9 +137,9 @@ class Pages
             }
 
             // ссылки под кратким описанием
-            if ($page->getDescribeLink() && ($descLink = $page->getDescribeLink()->getAll())) {
+            if ($page?->getDescribeLink() && ($descLink = $page?->getDescribeLink()?->getAll())) {
                 foreach ($descLink as $link) {
-                    if (($href = $link->getValue()) && ($text = $link->getDescription())) {
+                    if (($href = $link?->getValue()) && ($text = $link?->getDescription())) {
                         $this->describeLinkList[] = [
                             'text' => $text,
                             'href' => $href,
@@ -187,7 +187,7 @@ class Pages
         foreach ($pages as $page) {
             $p = [
                 'ID'   => $page->getId(),
-                'LINK' => $page->getLink()->getValue(),
+                'LINK' => $page->getLink()?->getValue(),
             ];
 
             if ($page->getIblockId()) {
@@ -197,7 +197,7 @@ class Pages
             $breadCrumbs = $page->getBreadcrumbs()->getAll();
 
             foreach ($breadCrumbs as $breadCrumb) {
-                $p['BREADCRUMBS'][] = $breadCrumb->getValue();
+                $p['BREADCRUMBS'][] = $breadCrumb?->getValue();
             }
 
             $a[$page->getId()] = $p;

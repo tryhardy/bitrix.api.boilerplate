@@ -11,35 +11,40 @@ class NotFound404 extends Page
         return 'notfound404';
     }
 
-    protected function setData(): array
-    {
-        $a = [];
+	protected function getMeta() : array
+	{
+		$meta = [];
 
-        if ($this->content['meta']['meta_title']) {
-            $a['meta']['title'] = $this->content['meta']['meta_title'];
+		if ($val = $this->content['meta']['meta_title']) {
+			$meta['title'] = $val;
+		}
+
+        if ($val = $this->content['meta']['meta_description']) {
+	        $meta['description'] = $val;
         }
 
-        if ($this->content['meta']['meta_description']) {
-            $a['meta']['description'] = $this->content['meta']['meta_description'];
+        if ($val = $this->content['meta']['title']) {
+	        $meta['h1'] = $val;
         }
 
-        if ($this->content['notfound404']['title']) {
-            $a['meta']['h1'] = $this->content['notfound404']['title'];
-            $a['title'] = $this->content['notfound404']['title'];
-        }
+		return $meta;
+	}
 
-        if ($this->content['notfound404']['text']) {
-            $a['text'] = $this->content['notfound404']['text'];
-        }
+	protected function getContent()
+	{
+		$content = [];
+		
+		if ($val = $this->content['content']['text']) {
+			$content['text'] = $val;
+		}
 
-        if ($this->content['notfound404']['link_href']
-            && $this->content['notfound404']['link_text']) {
-            $a['link'] = [
-                'href' => $this->content['notfound404']['link_href'],
-                'text' => $this->content['notfound404']['link_text'],
-            ];
-        }
+		if ($this->content['content']['link_href'] && $this->content['content']['link_text']) {
+			$content['link'] = [
+				'href' => $this->content['content']['link_href'],
+				'text' => $this->content['content']['link_text'],
+			];
+		}
 
-        return $a;
-    }
+		return $content;
+	}
 }

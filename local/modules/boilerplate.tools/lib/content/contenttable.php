@@ -19,6 +19,7 @@ class ContentTable extends Entity\DataManager
                 ->configureAutocomplete(),
             (new Entity\StringField('UF_CODE'))->configureRequired(),
             (new Entity\StringField('UF_PAGE'))->configureRequired(),
+	        new Entity\BooleanField('UF_ACTIVE'),
             new Entity\StringField('UF_BLOCK'),
             new Entity\StringField('UF_VALUE_RU'),
             new Entity\StringField('UF_VALUE_EN'),
@@ -34,6 +35,7 @@ class ContentTable extends Entity\DataManager
     public static function getPageContent(string $pageCode, string $languageId): array
     {
         $content = self::getPageContentFromBase($pageCode, $languageId);
+		if (!$content) $content = [];
 
         return self::groupPageContent($content);
     }
@@ -52,12 +54,15 @@ class ContentTable extends Entity\DataManager
                 'VALUE' => 'UF_VALUE_' . strtoupper($languageId),
             ],
             'filter' => [
+				'=UF_ACTIVE' => true,
                 '=UF_PAGE' => $pageCode,
             ],
             'cache'  => [
                 'ttl' => 600000,// около недели (в секундах)
             ],
         ])->fetchAll();
+
+		if (!$contents) $contents = [];
 
         return $contents;
     }

@@ -3,7 +3,7 @@
 namespace Boilerplate\Tools\Controller;
 
 use Bitrix\Main\Engine\Response\Json;
-use Boilerplate\Tools\Common as CommonData;
+use Boilerplate\Tools\Model as CommonData;
 
 class News extends Controller
 {

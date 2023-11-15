@@ -11,30 +11,22 @@ class Main extends Page
         return 'main';
     }
 
-    protected function setData(): array
-    {
-        return [
-            'meta'   => $this->getMeta(),
-            'hero'   => $this->getHero('hero'),
-            'banner' => $this->getBanner('banner'),
-            'news'   => $this->getNews('news'),
-        ];
-    }
-
     /**
      * Мета-теги
      */
-    private function getMeta(): array
+	protected function getMeta(): array
     {
-        return $this->page->getPageMeta();
+        return $this->page?->getPageMeta() ?: [];
     }
 
     /**
      * Первый экран
      */
-    private function getHero(string $blockCode): array
+	protected function getHero(string $blockCode): array
     {
         $a = [];
+
+		if (!$this->page) return [];
 
         // Заголовок
         if ($pageH1 = $this->page->getPageMeta()['pageH1']) {
@@ -103,7 +95,7 @@ class Main extends Page
     /**
      * Баннер
      */
-    private function getBanner(string $blockCode): array
+	protected function getBanner(string $blockCode): array
     {
         $a = [];
 
@@ -117,7 +109,7 @@ class Main extends Page
     /**
      * Новости
      */
-    private function getNews(string $blockCode): array
+    protected function getNews(string $blockCode): array
     {
         $a = [];
 

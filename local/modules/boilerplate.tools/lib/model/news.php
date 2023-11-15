@@ -1,6 +1,6 @@
 <?php
 
-namespace Boilerplate\Tools\Common;
+namespace Boilerplate\Tools\Model;
 
 use Bitrix\Main\Type\DateTime as BitrixDateTime;
 use Boilerplate\Tools\Content\Content;

@@ -1,47 +1,45 @@
-# bitrix.api.boilerplate
- 
-Бойлерплейт для работы с битриксом через роутинг  
-[Инструкция по настройке роутинга на битре тут](https://dev.1c-bitrix.ru/learning/course/index.php?COURSE_ID=43&CHAPTER_ID=013764)  
+# boilerplate.bitrix.api
 
-Для корректной работы необходимы:
-- **php** >=8.1
-- composer
-- nodejs
-
-Базовая настройка:
-- следуем битриксовым инструкциям по установке
-- ставим нужные библиотеки через композер
-
-## CSRF filters
+## CSRF проверки
 В **GET** передавать sessid={SESSION_ID}  
 Либо в **HEADER** 'X-Bitrix-Csrf-Token {SESSION_ID}'  
 В коде контроллера включать через prefilters в методе configureActions
 ```php
-public function configureActions(): array
-{
-    return [
-        'write' => [
-            'prefilters'  => [
-                //checking sessid param in request
-                new \Bitrix\Main\Engine\ActionFilter\Csrf(),
+    public function configureActions(): array
+    {
+        return [
+            'write' => [
+                'prefilters'  => [
+	                //checking sessid param in request
+	                new \Bitrix\Main\Engine\ActionFilter\Csrf(),
+                ],
+                'postfilters' => [],
             ],
-            'postfilters' => [],
-        ],
-    ];
-}
+        ];
+    }
 ```
 
-### Получить ID сессии   
-**GET** /api/sessid  
-Response:
+### Получить ID сессии
+Поеред этим подключить core битрикса.
+Список скриптов можно получить через эндпойнт:
+**Method:** GET  
+**Url:** /api/links/js
+**Csrf:** false
+**Response:**
 ```json
 {
   "status": "success",
   "data": {
-    "sessid": "118224010583f7fc26158e4edd065355"
+    "core": "/bitrix/js/main/core/core.min.js"
   },
   "errors": []
 }
+```
+Получить код сессии:
+```js
+BX.message('bitrix_sessid')
+//Аналогично
+BX.bitrix_sessid()
 ```
 
 ## Авторизация

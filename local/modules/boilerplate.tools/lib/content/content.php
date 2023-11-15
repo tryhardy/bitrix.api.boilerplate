@@ -43,7 +43,8 @@ class Content
             return $this->content[$pageCode];
         }
 
-        $this->content[$pageCode] = ContentTable::getPageContent($pageCode, $languageId);
+        $this->content[$pageCode] = ContentTable::getPageContent($pageCode, $languageId) ?: [];
+		if (!$this->content[$pageCode]) $this->content[$pageCode] = [];
         return $this->content[$pageCode];
     }
 }

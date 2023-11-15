@@ -25,6 +25,7 @@ class Page extends Controller
         $lang = $this->checkLang($lang);
 
         return match ($page) {
+	        'layout' => (new PageData\Layout($lang))->getData(),
             'main' => (new PageData\Main($lang))->getData(),
             '404' => (new PageData\NotFound404($lang))->getData(),
             'news' => (new PageData\News($lang))->getData(),
